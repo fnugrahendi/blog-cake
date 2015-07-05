@@ -66,7 +66,6 @@ class PostsController extends AppController{
 		if ($this->action=='add'){
 			return true;
 		}
-		
 		if (in_array($this->action, array('edit', 'delete'))){
 			$postId = (int) $this->request->params['pass'][0];
 			if ($this->Post->isOwnedBy($postId, $user['id'])){
@@ -74,6 +73,24 @@ class PostsController extends AppController{
 			}
 		}
 		return parent::isAuthorized($user);
+	}
+	
+	public function delete($id = null){
+		//$this->request->allowMethod('post');
+		//$this->Post->id = $id;
+		if (!$id){
+			throw new NotFoundException(__('Invalid post'));
+		}
+		$post = $this->Post->findById($id);
+		if (!$post){
+			throw new NotFoundException(__('Invalid post'));
+		}
+		if ($this->Post->delete($id)){
+			$this->Session->setFlash(__('Post has been deleted'));
+			return $this->redirect(array('action'=>'index'));
+		}
+		$this->Session->setFlash(__('Post was not deleted'));
+		return $this->redirect(array('action'=>'index'));
 	}
 }
 ?>

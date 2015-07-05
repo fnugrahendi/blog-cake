@@ -37,6 +37,14 @@
 				);
 			?>
 		</td>
+		<td>
+			<?php
+				echo $this->Html->link(
+					'Delete',
+					array('action'=>'delete',$post['Post']['id'])
+				);
+			?>
+		</td>
 	</tr>
 	<?php endforeach; ?>
 	<?php unset($post);?>
